@@ -1,5 +1,5 @@
 const fetchData = {
-  doSomething() {
+  getCustomersList() {
     try {
       const data = [
         {

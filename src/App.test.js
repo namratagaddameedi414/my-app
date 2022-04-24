@@ -18,7 +18,7 @@ describe('my function or component', () => {
   });
   it('renders without crashing', async() => {
 
-      const callApi = jest.spyOn(fetchData, 'doSomething').mockReturnValue(Promise.resolve(
+      const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve(
       [
         {
           "id": 0,
@@ -51,14 +51,14 @@ describe('my function or component', () => {
 
   it('should show Loading when there is no data', async() => {
     const div = document.createElement('div');
-    const callApi = jest.spyOn(fetchData, 'doSomething').mockReturnValue(Promise.resolve([]));
+    const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve([]));
     const {queryByText} = render(<App />);
     expect(await waitFor(() => queryByText('No record found'))).toBeTruthy();
     // ReactDOM.unmountComponentAtNode(div);
   });
 
   it('should show Loading when there is no dataxxxxx', async() => {
-    const callApi = jest.spyOn(fetchData, 'doSomething').mockReturnValue(Promise.resolve(
+    const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve(
       [
         {
           "id": 0,

@@ -35,7 +35,7 @@ function App() {
     }
 
     const fetchDataRes=()=>{
-      return  fetchData.doSomething()
+      return  fetchData.getCustomersList()
               .then((res) => {
                 const filteredList = getListByFilterPeriod(res);
                 const collection = filteredList.map(record=> {
