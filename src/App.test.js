@@ -51,7 +51,6 @@ describe('my function or component', () => {
     const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve([]));
     const {queryByText} = render(<App />);
     expect(await waitFor(() => queryByText('No record found'))).toBeTruthy();
-    // ReactDOM.unmountComponentAtNode(div);
   });
 
   it('should show transaction data when clicked on + icon', async() => {
@@ -79,7 +78,7 @@ describe('my function or component', () => {
           "tId": 3
         }
       ]));
-      const {getAllByTestId, getAllByText, queryByText } = render(<App />);
+      const {getAllByText } = render(<App />);
       const firstId = await waitFor(() => getAllByText("+"));
       act(() =>{
         fireEvent.click(firstId[0]);
