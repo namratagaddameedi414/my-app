@@ -18,7 +18,7 @@ function App() {
     }
     
     function getListByFilterPeriod(res) {
-      console.log(res)
+      const formattedArr = [];
       const filteredArr = res.filter(record=> {
         const startDate = moment(record.transactionDate);
         const endDate = moment(new Date());
@@ -26,27 +26,32 @@ function App() {
         var startMonths = getAbsoluteMonths(startDate);
         var endMonths = getAbsoluteMonths(endDate);
         var monthDifference = endMonths - startMonths + 1;
+
         if(monthDifference <= filterPeriod ){
+          let rewards = getRewards(record.amount);
+          let transactionDate = moment(record.transactionDate).format("MM/DD/YYYY");
+          let month = moment(record.transactionDate).format("MMMM");
+          const obj = { ...record,rewards, transactionDate, month };
+          formattedArr.push(obj);
           return true
         }
         return false
       });
-      return filteredArr;
+      return formattedArr;
     }
 
     const fetchDataRes=()=>{
       return  fetchData.getCustomersList()
               .then((res) => {
-                const filteredList = getListByFilterPeriod(res);
-                const collection = filteredList.map(record=> {
-                  let rewards = getRewards(record.amount);
-                  let transactionDate = moment(record.transactionDate).format("MM/DD/YYYY");
-                  let month = moment(record.transactionDate).format("MMMM");
-                  return { ...record,rewards, transactionDate, month }
-                });
+                // get past 3months result , format the list with rewards, month
+                const collection = getListByFilterPeriod(res);
+
+                // groupby name
                 var grouped = _.groupBy(collection, function(item) {
                     return item.name;
                 });
+
+                // final formatted list with groupBy name and bymonth transactionList and total Amount/rewards by name
                 const filteredOt = _.map(grouped, function(value, key){
                   const transList= [];
                   const userTransactions ={
@@ -143,7 +148,7 @@ function App() {
                                       <th>Amount</th>
                                     </tr>
                                   {  permonthTransactions.map(monthTransaction => 
-                                    <tr key={record.tId} style={{backgroundColor:'white'}}>
+                                    <tr key={monthTransaction.tId} style={{backgroundColor:'white'}}>
                                       <td>{monthTransaction.transactionDate}</td>
                                       <td> ${monthTransaction.amount}</td>
                                       <td>{monthTransaction.rewards}</td>
@@ -158,7 +163,8 @@ function App() {
                       )}
                       {
                         data.length === 0 && 
-                        <tr colSpan="5">No record found</tr>
+                        <tr>
+                          <td colSpan="5" style={{textAlign:"center"}}>No records found</td></tr>
                       }
                   </table>
                 }
