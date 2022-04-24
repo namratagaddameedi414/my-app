@@ -16,7 +16,7 @@ describe('my function or component', () => {
     ReactDOM.unmountComponentAtNode(container);
     container = null;
   });
-  it('renders without crashing', async() => {
+  it('renders with data and list', async() => {
 
       const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve(
       [
@@ -44,9 +44,6 @@ describe('my function or component', () => {
       ]));
       const {getAllByTestId } = render(<App />);
       expect(await waitFor(() => getAllByTestId(/^row-*/).length)).toBe(3);
-      // expect((await waitFor(() => getByTestId('reward-list'))).children).toHaveLength(3);
-      // console.log(listNode.children)
-      // expect(listNode.children).toHaveLength(3);
   });
 
   it('should show Loading when there is no data', async() => {
@@ -57,7 +54,7 @@ describe('my function or component', () => {
     // ReactDOM.unmountComponentAtNode(div);
   });
 
-  it('should show Loading when there is no dataxxxxx', async() => {
+  it('should show transaction data when clicked on + icon', async() => {
     const callApi = jest.spyOn(fetchData, 'getCustomersList').mockReturnValue(Promise.resolve(
       [
         {
@@ -86,7 +83,6 @@ describe('my function or component', () => {
       const firstId = await waitFor(() => getAllByText("+"));
       act(() =>{
         fireEvent.click(firstId[0]);
-        // expect(getAllByText(/TransactionDate/i)).toBeTruthy();
       });
       expect(await waitFor(() => getAllByText(/TransactionDate/i))).toBeTruthy();
   
